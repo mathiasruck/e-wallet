@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+    mysql:
+        image: mysql:5.7.26
+        environment:
+            - MYSQL_HOST=localhost
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_ROOT_PASSWORD=r00tp4ssw0rd
+            - MYSQL_DATABASE=e-wallet
+            - MYSQL_USER=e-wallet
+            - MYSQL_PASSWORD=e-wallet!1
+            - TZ=UTC
+        command: mysqld --lower_case_table_names=1 --sql-mode="STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION" --skip-ssl
+        ports:
+            - "3306:3306"
+        volumes:
+            - "./data/mysql/:/var/lib/mysql"
