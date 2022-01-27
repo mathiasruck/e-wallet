@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface WalletService {
 
-    public List<Wallet> listAll();
+    List<Wallet> listAll();
 
-    public Wallet save(Wallet wallet);
+    Wallet save(Wallet wallet);
 
-    public void delete(Long id);
+    void delete(Long id);
 
-    public Wallet getById(Long id);
+    Wallet getById(Long id);
 
 }

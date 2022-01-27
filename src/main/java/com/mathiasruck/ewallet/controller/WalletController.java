@@ -39,5 +39,4 @@ public class WalletController {
     public Wallet update(@RequestBody WalletDto wallet) {
         return walletService.save(wallet.get());
     }
-
 }

@@ -30,12 +30,10 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public void delete(Long id) {
         walletRepository.deleteById(id);
-
     }
 
     @Override
     public Wallet getById(Long id) {
         return walletRepository.findById(id).orElseThrow();
     }
-
 }
