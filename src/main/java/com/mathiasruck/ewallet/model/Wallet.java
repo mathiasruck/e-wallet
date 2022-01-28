@@ -1,8 +1,7 @@
 package com.mathiasruck.ewallet.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -10,14 +9,18 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
+@Builder(toBuilder = true)
 @Entity
 @Where(clause = "DELETED IS NULL")
 @SQLDelete(sql = "UPDATE WALLET SET DELETED = id WHERE id = ?")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Wallet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,10 +31,7 @@ public class Wallet {
 
     @Min(value = 0, message = "balance_cannot_be_smaller_than_zero")
     @NotNull(message = "balance_cannot_be_null")
-    private Double balance;
-
-    @Column(updatable = false)
-    private LocalDateTime creationDate = LocalDateTime.now();
+    private BigDecimal balance;
 
     @JsonIgnore
     @Column(name = "DELETED", insertable = false, updatable = false)

@@ -1,7 +1,6 @@
 package com.mathiasruck.ewallet.controller;
 
 import com.mathiasruck.ewallet.dto.BalanceDto;
-import com.mathiasruck.ewallet.model.Wallet;
 import com.mathiasruck.ewallet.service.BalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,18 +13,17 @@ public class BalanceController {
     private BalanceService balanceService;
 
     @GetMapping("/wallets/{walletId}/balance")
-    public Wallet get(@PathVariable("walletId") Long walletId, @RequestBody BalanceDto balanceDto) {
+    public BalanceDto get(@PathVariable("walletId") Long walletId) {
+        return balanceService.get(walletId);
+    }
+
+    @PatchMapping("/wallets/{walletId}/balance/add")
+    public BalanceDto add(@PathVariable("walletId") Long walletId, @RequestBody BalanceDto balanceDto) {
         return balanceService.add(walletId, balanceDto);
     }
 
-    @PutMapping("/wallets/{walletId}/balance/add")
-    public Wallet add(@PathVariable("walletId") Long walletId, @RequestBody BalanceDto balanceDto) {
-        return balanceService.add(walletId, balanceDto);
-    }
-
-    @PutMapping("/wallets/{walletId}/balance/withdraw")
-    public Wallet withdraw(@PathVariable("walletId") Long walletId, @RequestBody BalanceDto balanceDto) {
+    @PatchMapping("/wallets/{walletId}/balance/withdraw")
+    public BalanceDto withdraw(@PathVariable("walletId") Long walletId, @RequestBody BalanceDto balanceDto) {
         return balanceService.withdraw(walletId, balanceDto);
     }
-
 }

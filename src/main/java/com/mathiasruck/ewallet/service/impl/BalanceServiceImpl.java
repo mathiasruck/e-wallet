@@ -8,12 +8,15 @@ import com.mathiasruck.ewallet.service.BalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
+
+import static com.mathiasruck.ewallet.util.Messages.BALANCE_CANNOT_BE_SMALLER_THAN_ZERO;
+import static com.mathiasruck.ewallet.util.Messages.WALLET_ID_NOT_FOUND;
 
 @Service
 public class BalanceServiceImpl implements BalanceService {
 
-    public static final String WALLET_ID_NOT_FOUND = "wallet_id_not_found";
     @Autowired
     private WalletRepository walletRepository;
 
@@ -21,28 +24,42 @@ public class BalanceServiceImpl implements BalanceService {
     public BalanceDto get(Long walletId) {
         Wallet wallet = walletRepository.findById(walletId).
                 orElseThrow(() -> new WalletException(WALLET_ID_NOT_FOUND));
+
         return BalanceDto.builder()
                 .value(wallet.getBalance())
                 .build();
     }
 
     @Override
-    public Wallet add(Long walletId, BalanceDto balanceDto) {
+    public BalanceDto add(Long walletId, BalanceDto balanceDto) {
         Wallet wallet = walletRepository.findById(walletId)
                 .orElseThrow(() -> new WalletException(WALLET_ID_NOT_FOUND));
-        double finalBalance = Optional.of(wallet.getBalance() + balanceDto.getValue()).filter(balance -> balance > 0)
-                .orElseThrow(() -> new WalletException("balance_cannot_be_smaller_than_zero"));
+
+        BigDecimal finalBalance = Optional.of(wallet.getBalance().add(balanceDto.getValue()))
+                .filter(balance -> balance.compareTo(BigDecimal.ZERO) >= 0)
+                .orElseThrow(() -> new WalletException(BALANCE_CANNOT_BE_SMALLER_THAN_ZERO));
         wallet.setBalance(finalBalance);
-        return walletRepository.save(wallet);
+
+        Wallet savedWallet = walletRepository.save(wallet);
+        return  BalanceDto.builder()
+                .value(savedWallet.getBalance())
+                .build();
     }
 
     @Override
-    public Wallet withdraw(Long walletId, BalanceDto balanceDto) {
+    public BalanceDto withdraw(Long walletId, BalanceDto balanceDto) {
         Wallet wallet = walletRepository.findById(walletId)
                 .orElseThrow(() -> new WalletException(WALLET_ID_NOT_FOUND));
-        double finalBalance = Optional.of(wallet.getBalance() - balanceDto.getValue()).filter(balance -> balance > 0)
-                .orElseThrow(() -> new WalletException("balance_cannot_be_smaller_than_zero"));
+
+        BigDecimal finalBalance = Optional.of(wallet.getBalance().subtract(balanceDto.getValue()))
+                .filter(balance -> balance.compareTo(BigDecimal.ZERO) >= 0)
+                .orElseThrow(() -> new WalletException(BALANCE_CANNOT_BE_SMALLER_THAN_ZERO));
         wallet.setBalance(finalBalance);
-        return walletRepository.save(wallet);
+
+        Wallet savedWallet = walletRepository.save(wallet);
+        return  BalanceDto.builder()
+                .value(savedWallet.getBalance())
+                .build();
     }
+
 }

@@ -1,7 +1,6 @@
 package com.mathiasruck.ewallet.controller;
 
 import com.mathiasruck.ewallet.dto.WalletDto;
-import com.mathiasruck.ewallet.model.Wallet;
 import com.mathiasruck.ewallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,27 +15,27 @@ public class WalletController {
     private WalletService walletService;
 
     @GetMapping
-    public List<Wallet> listAll() {
+    public List<WalletDto> listAll() {
         return walletService.listAll();
     }
 
-    @GetMapping("/{id}")
-    public Wallet getById(@PathVariable("id") Long id) {
-        return walletService.getById(id);
+    @GetMapping("/{walletId}")
+    public WalletDto getById(@PathVariable("walletId") Long walletId) {
+        return walletService.getById(walletId);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable("id") Long id) {
-        walletService.delete(id);
+    @DeleteMapping("/{walletId}")
+    public void deleteById(@PathVariable("walletId") Long walletId) {
+        walletService.delete(walletId);
     }
 
     @PostMapping
-    public Wallet create(@RequestBody WalletDto wallet) {
-        return walletService.save(wallet.get());
+    public WalletDto create(@RequestBody WalletDto wallet) {
+        return walletService.create(wallet.get());
     }
 
-    @PutMapping
-    public Wallet update(@RequestBody WalletDto wallet) {
-        return walletService.save(wallet.get());
+    @PutMapping("/{walletId}")
+    public WalletDto update(@PathVariable("walletId") Long walletId, @RequestBody WalletDto wallet) {
+        return walletService.update(walletId, wallet.get());
     }
 }

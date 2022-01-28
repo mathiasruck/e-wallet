@@ -3,13 +3,18 @@ package com.mathiasruck.ewallet.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mathiasruck.ewallet.model.Wallet;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 public class WalletDto {
-    private Wallet wallet;
+
+    private final Wallet wallet;
 
     public WalletDto() {
         wallet = new Wallet();
+    }
+
+    public WalletDto(Wallet wallet) {
+        this.wallet = wallet;
     }
 
     public Long getId() {
@@ -28,16 +33,12 @@ public class WalletDto {
         wallet.setOwnerFullName(ownerFullName);
     }
 
-    public Double getBalance() {
+    public BigDecimal getBalance() {
         return wallet.getBalance();
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         wallet.setBalance(balance);
-    }
-
-    public LocalDateTime getCreationDate() {
-        return wallet.getCreationDate();
     }
 
     @JsonIgnore

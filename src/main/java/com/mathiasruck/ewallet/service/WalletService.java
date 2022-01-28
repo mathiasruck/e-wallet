@@ -1,18 +1,21 @@
 package com.mathiasruck.ewallet.service;
 
 
+import com.mathiasruck.ewallet.dto.WalletDto;
 import com.mathiasruck.ewallet.model.Wallet;
 
 import java.util.List;
 
 public interface WalletService {
 
-    List<Wallet> listAll();
+    List<WalletDto> listAll();
 
-    Wallet save(Wallet wallet);
+    WalletDto create(Wallet wallet);
 
-    void delete(Long id);
+    WalletDto update(Long walletId, Wallet wallet);
 
-    Wallet getById(Long id);
+    void delete(Long walletId);
+
+    WalletDto getById(Long walletId);
 
 }
