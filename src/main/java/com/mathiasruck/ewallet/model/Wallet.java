@@ -10,6 +10,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,6 +33,10 @@ public class Wallet {
     @Min(value = 0, message = "balance_cannot_be_smaller_than_zero")
     @NotNull(message = "balance_cannot_be_null")
     private BigDecimal balance;
+
+    @OneToMany(mappedBy = "wallet", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<TransactionHistory> transactionHistory;
 
     @JsonIgnore
     @Column(name = "DELETED", insertable = false, updatable = false)
