@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
-import AppNavbar from './AppNavbar';
+import AppNavbar from './AppNavBar';
 
 class WalletEdit extends Component {
 
     emptyItem = {
-        name: '',
-        email: ''
+        ownerFullName: '',
+        balance: ''
     };
 
     constructor(props) {
@@ -21,7 +21,7 @@ class WalletEdit extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const wallet = await (await fetch(`/v1/wallets/${this.props.match.params.id}`)).json();
+            const wallet = await (await fetch(`/wallets/${this.props.match.params.id}`)).json();
             this.setState({item: wallet});
         }
     }
@@ -39,7 +39,7 @@ async handleSubmit(event) {
     event.preventDefault();
     const {item} = this.state;
 
-    await fetch('/v1/wallets' + (item.id ? '/' + item.id : ''), {
+    await fetch('/wallets' + (item.id ? '/' + item.id : ''), {
         method: (item.id) ? 'PUT' : 'POST',
         headers: {
             'Accept': 'application/json',
@@ -47,7 +47,7 @@ async handleSubmit(event) {
         },
         body: JSON.stringify(item),
     });
-    this.props.history.push('/v1/wallets');
+    this.props.history.push('/wallets');
 }
 
     render() {
@@ -60,14 +60,14 @@ async handleSubmit(event) {
                 {title}
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
-                        <Label for="name">Name</Label>
-                        <Input type="text" name="name" id="name" value={item.name || ''}
-                               onChange={this.handleChange} autoComplete="name"/>
+                        <Label for="ownerFullName">Owner Full Name</Label>
+                        <Input type="text" name="ownerFullName" id="ownerFullName" defaultValue={item.ownerFullName || ''}
+                               onChange={this.handleChange} autoComplete="ownerFullName"/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="email">Email</Label>
-                        <Input type="text" name="email" id="email" value={item.email || ''}
-                               onChange={this.handleChange} autoComplete="email"/>
+                        <Label for="balance">Current Balance</Label>
+                        <Input type="text" name="balance" id="balance" defaultValue={item.balance || ''}
+                               onChange={this.handleChange} autoComplete="balance"/>
                     </FormGroup>
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
