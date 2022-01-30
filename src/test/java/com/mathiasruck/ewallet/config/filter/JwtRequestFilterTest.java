@@ -3,10 +3,12 @@ package com.mathiasruck.ewallet.config.filter;
 import com.mathiasruck.ewallet.model.AuthenticationUserDetails;
 import com.mathiasruck.ewallet.util.JwtUtil;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,9 +32,11 @@ public class JwtRequestFilterTest {
     @Mock
     private JwtUtil jwtUtil;
 
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
+
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
         jwtRequestFilter = new JwtRequestFilter();
         setField(jwtRequestFilter, "userDetailsService", userDetailsService);
         setField(jwtRequestFilter, "jwtUtil", jwtUtil);
