@@ -49,6 +49,7 @@ public class WalletServiceImpl implements WalletService {
     public void delete(Long walletId) {
         if (walletRepository.existsById(walletId)) {
             walletRepository.deleteById(walletId);
+            return;
         }
         throw new WalletException(WALLET_ID_NOT_FOUND);
     }

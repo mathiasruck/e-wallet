@@ -13,6 +13,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class BalanceDto {
 
-    private BigDecimal value;
+    private BigDecimal balance;
 
 }

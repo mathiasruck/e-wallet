@@ -7,6 +7,10 @@ public class AuthenticationRequestDto {
 
     private AuthenticationRequest authenticationRequest;
 
+    public AuthenticationRequestDto(AuthenticationRequest authenticationRequest) {
+        this.authenticationRequest = authenticationRequest;
+    }
+
     public AuthenticationRequestDto() {
         this.authenticationRequest = new AuthenticationRequest();
     }

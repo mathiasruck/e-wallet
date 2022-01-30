@@ -26,7 +26,7 @@ public class BalanceServiceImpl implements BalanceService {
                 orElseThrow(() -> new WalletException(WALLET_ID_NOT_FOUND));
 
         return BalanceDto.builder()
-                .value(wallet.getBalance())
+                .balance(wallet.getBalance())
                 .build();
     }
 
@@ -35,14 +35,14 @@ public class BalanceServiceImpl implements BalanceService {
         Wallet wallet = walletRepository.findById(walletId)
                 .orElseThrow(() -> new WalletException(WALLET_ID_NOT_FOUND));
 
-        BigDecimal finalBalance = Optional.of(wallet.getBalance().add(balanceDto.getValue()))
+        BigDecimal finalBalance = Optional.of(wallet.getBalance().add(balanceDto.getBalance()))
                 .filter(balance -> balance.compareTo(BigDecimal.ZERO) >= 0)
                 .orElseThrow(() -> new WalletException(BALANCE_CANNOT_BE_SMALLER_THAN_ZERO));
         wallet.setBalance(finalBalance);
 
         Wallet savedWallet = walletRepository.save(wallet);
         return  BalanceDto.builder()
-                .value(savedWallet.getBalance())
+                .balance(savedWallet.getBalance())
                 .build();
     }
 
@@ -51,14 +51,14 @@ public class BalanceServiceImpl implements BalanceService {
         Wallet wallet = walletRepository.findById(walletId)
                 .orElseThrow(() -> new WalletException(WALLET_ID_NOT_FOUND));
 
-        BigDecimal finalBalance = Optional.of(wallet.getBalance().subtract(balanceDto.getValue()))
+        BigDecimal finalBalance = Optional.of(wallet.getBalance().subtract(balanceDto.getBalance()))
                 .filter(balance -> balance.compareTo(BigDecimal.ZERO) >= 0)
                 .orElseThrow(() -> new WalletException(BALANCE_CANNOT_BE_SMALLER_THAN_ZERO));
         wallet.setBalance(finalBalance);
 
         Wallet savedWallet = walletRepository.save(wallet);
         return  BalanceDto.builder()
-                .value(savedWallet.getBalance())
+                .balance(savedWallet.getBalance())
                 .build();
     }
 
