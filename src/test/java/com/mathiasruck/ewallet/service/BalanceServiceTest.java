@@ -30,6 +30,9 @@ public class BalanceServiceTest {
     @Mock
     private WalletRepository walletRepository;
 
+    @Mock
+    private TransactionHistoryService transactionHistoryService;
+
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
 
@@ -37,6 +40,7 @@ public class BalanceServiceTest {
     public void setup() {
         balanceService = new BalanceServiceImpl();
         setField(balanceService, "walletRepository", walletRepository);
+        setField(balanceService, "transactionHistoryService", transactionHistoryService);
     }
 
     @Test

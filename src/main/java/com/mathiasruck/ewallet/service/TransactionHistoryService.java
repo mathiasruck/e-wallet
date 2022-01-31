@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface TransactionHistoryService {
 
-    TransactionHistory createAddTransaction(Wallet wallet, BigDecimal value);
+    void createAddTransaction(Wallet wallet, BigDecimal value);
 
-    TransactionHistory createWithdrawTransaction(Wallet wallet, BigDecimal value);
+    void createWithdrawTransaction(Wallet wallet, BigDecimal value);
 
     List<TransactionHistory> getTransactionHistoryByWalletId(Long walletId);
 
