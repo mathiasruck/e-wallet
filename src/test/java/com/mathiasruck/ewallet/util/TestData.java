@@ -1,12 +1,15 @@
 package com.mathiasruck.ewallet.util;
 
+import com.mathiasruck.ewallet.enums.TransactionType;
 import com.mathiasruck.ewallet.model.AuthenticationResponse;
 import com.mathiasruck.ewallet.model.AuthenticationUserDetails;
+import com.mathiasruck.ewallet.model.TransactionHistory;
 import com.mathiasruck.ewallet.model.Wallet;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,6 +49,26 @@ public class TestData {
                 .id(2L)
                 .ownerFullName("C-3PO")
                 .balance(BigDecimal.valueOf(100))
+                .build();
+    }
+
+    public static TransactionHistory getTransactionAdd(){
+        return TransactionHistory.builder()
+                .transactionType(TransactionType.ADD)
+                .wallet(getLukeSkywalkerWallet())
+                .executionDate(OffsetDateTime.now())
+                .finalBalance(BigDecimal.valueOf(5000))
+                .value(BigDecimal.valueOf(2500))
+                .build();
+    }
+
+    public static TransactionHistory getTransactionWithdraw(){
+        return TransactionHistory.builder()
+                .transactionType(TransactionType.WITHDRAW)
+                .wallet(getLukeSkywalkerWallet())
+                .executionDate(OffsetDateTime.now())
+                .finalBalance(BigDecimal.valueOf(2500))
+                .value(BigDecimal.valueOf(5000))
                 .build();
     }
 }

@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,14 +31,14 @@ public class WalletServiceTest {
 
     private WalletService walletService;
 
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
+
     @Mock
     private WalletRepository walletRepository;
 
     @Mock
     private TransactionHistoryService transactionHistoryService;
-
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
 
     @Before
     public void setup() {
@@ -72,6 +73,38 @@ public class WalletServiceTest {
         walletService.update(lukeSkywalkerWallet.getId(), lukeSkywalkerWallet);
 
         verify(walletRepository, times(1)).save(any());
+        verify(transactionHistoryService, times(0)).createWithdrawTransaction(any(), any());
+    }
+
+    @Test
+    public void updateWalletAndAddFundsSuccessfully() {
+        Wallet lukeSkywalkerWalletFromDb = getLukeSkywalkerWallet();
+        Wallet lukeSkywalkerWalletToSave = getLukeSkywalkerWallet().toBuilder().balance(BigDecimal.valueOf(15000)).build();
+
+        when(walletRepository.findById(any())).thenReturn(Optional.of(lukeSkywalkerWalletFromDb));
+        when(walletRepository.save(any(Wallet.class))).thenReturn(lukeSkywalkerWalletToSave);
+        Wallet walletSaved = walletService.update(lukeSkywalkerWalletToSave.getId(), lukeSkywalkerWalletToSave).get();
+
+        assertThat(walletSaved.getBalance(), is(equalTo(BigDecimal.valueOf(15000))));
+        verify(walletRepository, times(1)).save(any());
+        verify(transactionHistoryService, times(1)).createAddTransaction(any(), any());
+        verify(transactionHistoryService, times(0)).createWithdrawTransaction(any(), any());
+
+    }
+
+    @Test
+    public void updateWalletAndWithdrawFundsSuccessfully() {
+        Wallet lukeSkywalkerWalletFromDb = getLukeSkywalkerWallet();
+        Wallet lukeSkywalkerWalletToSave = getLukeSkywalkerWallet().toBuilder().balance(BigDecimal.valueOf(5000)).build();
+
+        when(walletRepository.findById(any())).thenReturn(Optional.of(lukeSkywalkerWalletFromDb));
+        when(walletRepository.save(any(Wallet.class))).thenReturn(lukeSkywalkerWalletToSave);
+        Wallet walletSaved = walletService.update(lukeSkywalkerWalletToSave.getId(), lukeSkywalkerWalletToSave).get();
+
+        assertThat(walletSaved.getBalance(), is(equalTo(BigDecimal.valueOf(5000))));
+        verify(walletRepository, times(1)).save(any());
+        verify(transactionHistoryService, times(0)).createAddTransaction(any(), any());
+        verify(transactionHistoryService, times(1)).createWithdrawTransaction(any(), any());
     }
 
     @Test

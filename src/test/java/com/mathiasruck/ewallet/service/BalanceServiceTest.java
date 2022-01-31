@@ -27,14 +27,14 @@ public class BalanceServiceTest {
 
     private BalanceService balanceService;
 
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
+
     @Mock
     private WalletRepository walletRepository;
 
     @Mock
     private TransactionHistoryService transactionHistoryService;
-
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
 
     @Before
     public void setup() {
