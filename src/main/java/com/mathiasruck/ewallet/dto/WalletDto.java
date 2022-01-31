@@ -47,6 +47,10 @@ public class WalletDto {
         return wallet.getTransactionHistory();
     }
 
+    public void setTransactionHistory(Set<TransactionHistory> transactionHistory){
+        // Do nothing as this should not be updated here
+    }
+
     @JsonIgnore
     public Wallet get() {
         return wallet;
