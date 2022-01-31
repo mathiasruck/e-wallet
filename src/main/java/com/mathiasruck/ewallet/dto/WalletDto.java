@@ -1,9 +1,11 @@
 package com.mathiasruck.ewallet.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mathiasruck.ewallet.model.TransactionHistory;
 import com.mathiasruck.ewallet.model.Wallet;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 public class WalletDto {
 
@@ -39,6 +41,10 @@ public class WalletDto {
 
     public void setBalance(BigDecimal balance) {
         wallet.setBalance(balance);
+    }
+
+    public Set<TransactionHistory> getTransactionHistory(){
+        return wallet.getTransactionHistory();
     }
 
     @JsonIgnore

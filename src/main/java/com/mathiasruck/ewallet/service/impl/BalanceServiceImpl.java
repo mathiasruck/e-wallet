@@ -5,6 +5,7 @@ import com.mathiasruck.ewallet.exception.WalletException;
 import com.mathiasruck.ewallet.model.Wallet;
 import com.mathiasruck.ewallet.repository.WalletRepository;
 import com.mathiasruck.ewallet.service.BalanceService;
+import com.mathiasruck.ewallet.service.TransactionHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Autowired
     private WalletRepository walletRepository;
+
+    @Autowired
+    private TransactionHistoryService transactionHistoryService;
 
     @Override
     public BalanceDto get(Long walletId) {
@@ -40,6 +44,8 @@ public class BalanceServiceImpl implements BalanceService {
                 .orElseThrow(() -> new WalletException(BALANCE_CANNOT_BE_SMALLER_THAN_ZERO));
         wallet.setBalance(finalBalance);
 
+        transactionHistoryService.createAddTransaction(wallet, balanceDto.getBalance());
+
         Wallet savedWallet = walletRepository.save(wallet);
         return  BalanceDto.builder()
                 .balance(savedWallet.getBalance())
@@ -55,6 +61,8 @@ public class BalanceServiceImpl implements BalanceService {
                 .filter(balance -> balance.compareTo(BigDecimal.ZERO) >= 0)
                 .orElseThrow(() -> new WalletException(BALANCE_CANNOT_BE_SMALLER_THAN_ZERO));
         wallet.setBalance(finalBalance);
+
+        transactionHistoryService.createWithdrawTransaction(wallet, balanceDto.getBalance());
 
         Wallet savedWallet = walletRepository.save(wallet);
         return  BalanceDto.builder()
