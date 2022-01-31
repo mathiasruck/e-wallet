@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
-import Home from '../Home';
+import '../app/App.css';
+import Home from '../home/Home';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import WalletList from '../wallet/WalletList';
 import WalletEdit from "../wallet/WalletEdit";
