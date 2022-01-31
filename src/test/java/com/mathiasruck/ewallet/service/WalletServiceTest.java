@@ -33,6 +33,9 @@ public class WalletServiceTest {
     @Mock
     private WalletRepository walletRepository;
 
+    @Mock
+    private TransactionHistoryService transactionHistoryService;
+
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
 
@@ -40,6 +43,7 @@ public class WalletServiceTest {
     public void setup() {
         walletService = new WalletServiceImpl();
         setField(walletService, "walletRepository", walletRepository);
+        setField(walletService, "transactionHistoryService", transactionHistoryService);
     }
 
     @Test
@@ -63,7 +67,7 @@ public class WalletServiceTest {
     @Test
     public void updateWalletSuccessfully() {
         Wallet lukeSkywalkerWallet = getLukeSkywalkerWallet();
-        when(walletRepository.existsById(any())).thenReturn(true);
+        when(walletRepository.findById(any())).thenReturn(Optional.of(lukeSkywalkerWallet));
         when(walletRepository.save(any(Wallet.class))).thenReturn(lukeSkywalkerWallet);
         walletService.update(lukeSkywalkerWallet.getId(), lukeSkywalkerWallet);
 
