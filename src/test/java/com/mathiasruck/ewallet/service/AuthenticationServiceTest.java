@@ -27,14 +27,18 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 public class AuthenticationServiceTest {
 
     AuthenticationService authenticationService;
-    @Mock
-    private AuthenticationManager authenticationManager;
-    @Mock
-    private JwtUtil jwtTokenUtil;
-    @Mock
-    private UserDetailsService userDetailsService;
+
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private JwtUtil jwtTokenUtil;
+
+    @Mock
+    private UserDetailsService userDetailsService;
 
     @Before
     public void setup() {
