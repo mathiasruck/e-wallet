@@ -1,5 +1,6 @@
 package com.mathiasruck.ewallet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mathiasruck.ewallet.enums.TransactionType;
 import lombok.*;
 
@@ -28,8 +29,8 @@ public class TransactionHistory {
 
     private TransactionType transactionType;
 
-    @ManyToOne(fetch = FetchType.LAZY, optio
-            nal = false)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 

@@ -2,7 +2,6 @@ package com.mathiasruck.ewallet.service.impl;
 
 import com.mathiasruck.ewallet.dto.BalanceDto;
 import com.mathiasruck.ewallet.exception.WalletException;
-import com.mathiasruck.ewallet.model.TransactionHistory;
 import com.mathiasruck.ewallet.model.Wallet;
 import com.mathiasruck.ewallet.repository.WalletRepository;
 import com.mathiasruck.ewallet.service.BalanceService;
@@ -45,8 +44,7 @@ public class BalanceServiceImpl implements BalanceService {
                 .orElseThrow(() -> new WalletException(BALANCE_CANNOT_BE_SMALLER_THAN_ZERO));
         wallet.setBalance(finalBalance);
 
-        TransactionHistory withdrawTransaction = transactionHistoryService.createAddTransaction(wallet, balanceDto.getValue());
-        wallet.getTransactionHistory().add(withdrawTransaction);
+        transactionHistoryService.createAddTransaction(wallet, balanceDto.getBalance());
 
         Wallet savedWallet = walletRepository.save(wallet);
         return  BalanceDto.builder()
@@ -64,8 +62,7 @@ public class BalanceServiceImpl implements BalanceService {
                 .orElseThrow(() -> new WalletException(BALANCE_CANNOT_BE_SMALLER_THAN_ZERO));
         wallet.setBalance(finalBalance);
 
-        TransactionHistory addTransaction = transactionHistoryService.createWithdrawTransaction(wallet, balanceDto.getValue());
-        wallet.getTransactionHistory().add(addTransaction);
+        transactionHistoryService.createWithdrawTransaction(wallet, balanceDto.getBalance());
 
         Wallet savedWallet = walletRepository.save(wallet);
         return  BalanceDto.builder()

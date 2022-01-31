@@ -19,23 +19,27 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService 
     private TransactionHistoryRepository transactionHistoryRepository;
 
     @Override
-    public TransactionHistory createAddTransaction(Wallet wallet, BigDecimal value) {
-        return TransactionHistory.builder()
+    public void createAddTransaction(Wallet wallet, BigDecimal value) {
+        TransactionHistory transactionHistory = TransactionHistory.builder()
                 .value(value)
                 .finalBalance(wallet.getBalance())
                 .executionDate(OffsetDateTime.now())
                 .transactionType(TransactionType.ADD)
+                .wallet(wallet)
                 .build();
+        transactionHistoryRepository.save(transactionHistory);
     }
 
     @Override
-    public TransactionHistory createWithdrawTransaction(Wallet wallet, BigDecimal value) {
-        return TransactionHistory.builder()
+    public void createWithdrawTransaction(Wallet wallet, BigDecimal value) {
+        TransactionHistory transactionHistory = TransactionHistory.builder()
                 .value(value)
                 .finalBalance(wallet.getBalance())
                 .executionDate(OffsetDateTime.now())
                 .transactionType(TransactionType.WITHDRAW)
+                .wallet(wallet)
                 .build();
+        transactionHistoryRepository.save(transactionHistory);
     }
 
     @Override
